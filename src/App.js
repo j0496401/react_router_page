@@ -8,6 +8,8 @@ import Home from "./Home";
 import About from "./About";
 import Profile from './Profile';
 import NotFound from "./NotFound";
+import LoginForm from './LoginForm';
+import LogoutButton from './LogoutButton';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,13 +30,25 @@ function App() {
         <Link to="/profile">
           <button>Profile</button>
         </Link>
+        {authenticated ? (
+          <LogoutButton logout={logout} />
+        ) : (
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
+        )}
       </header>
       <hr />
       <main>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
-          <Route path="/profile" component={Profile} />
+          <Route
+            path="/login"
+            render={props => (
+              <LoginForm authenticated={authenticated} login={login} {...props} />
+            )}
+          />
           <AuthRoute
             authenticated={authenticated}
             path="/profile"
